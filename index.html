@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasarım Sistemi Referansı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #112A40;
+    --white: #ffffff;
+    --space-1: 8px;
+    --space-2: 16px;
+    --space-3: 24px;
+    --space-4: 32px;
+    --space-5: 48px;
+    --space-6: 64px;
+    --space-7: 96px;
+    --radius: 4px;
+    --ease-out: cubic-bezier(0.45, 0, 0.15, 1);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--white);
+    color: var(--navy);
+    font-family: 'Source Serif 4', serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  a { color: inherit; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--space-3); }
+
+  /* --- top nav --- */
+  nav.toc {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--navy);
+  }
+  .toc-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: var(--space-2) var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .toc-title {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--navy);
+    margin-right: auto;
+  }
+  .toc-links { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .toc-links a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    opacity: 0.7;
+  }
+  .toc-links a:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+  @media (hover: hover) {
+    .toc-links a:hover { opacity: 1; border-bottom-color: var(--navy); }
+  }
+
+  /* --- page head --- */
+  header.page-head {
+    padding: var(--space-6) 0 var(--space-5);
+    border-bottom: 1px solid var(--navy);
+  }
+  .eyebrow {
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    display: block;
+    margin-bottom: var(--space-2);
+    opacity: 0.7;
+  }
+  h1.page-title {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: clamp(30px, 4.6vw, 48px);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--space-3);
+    max-width: 20ch;
+    color: var(--navy);
+  }
+  p.page-desc {
+    font-size: clamp(15px, 1.6vw, 17px);
+    line-height: 1.65;
+    color: var(--navy);
+    opacity: 0.75;
+    max-width: 64ch;
+    margin: 0;
+  }
+
+  section.doc-section { padding: var(--space-6) 0; border-bottom: 1px solid var(--navy); }
+  section.doc-section:last-of-type { border-bottom: none; }
+  .section-head { margin-bottom: var(--space-4); max-width: 68ch; }
+  .section-kicker {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--navy);
+    opacity: 0.55;
+    margin-bottom: var(--space-1);
+  }
+  h2.section-title {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 0 0 var(--space-2);
+    color: var(--navy);
+  }
+  p.section-desc { font-size: 15px; line-height: 1.65; color: var(--navy); opacity: 0.75; margin: 0; }
+
+  /* --- tokens --- */
+  .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-3); }
+  .token-swatch {
+    border: 1px solid var(--navy);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--white);
+  }
+  .token-color { height: 72px; }
+  .token-meta { padding: var(--space-2); display: grid; gap: 4px; }
+  .token-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .token-value { font-size: 12px; font-family: monospace; color: var(--navy); opacity: 0.7; }
+
+  /* --- font specimens --- */
+  .specimen-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+  .specimen {
+    background: var(--white);
+    border: 1px solid var(--navy);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .specimen-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+    border-bottom: 1px solid var(--navy);
+    padding-bottom: var(--space-2);
+  }
+  .specimen-name-group { display: flex; flex-direction: column; gap: 4px; }
+  .specimen-index { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; color: var(--navy); opacity: 0.6; }
+  .specimen-name { font-size: 18px; font-weight: 700; color: var(--navy); }
+  .specimen-meta { display: flex; flex-direction: column; gap: 4px; text-align: right; }
+  .specimen-meta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); opacity: 0.6; }
+  .specimen-meta-value { font-size: 13px; color: var(--navy); opacity: 0.8; }
+  .specimen-display { font-family: 'PT Serif', serif; font-weight: 700; font-size: clamp(26px, 3.6vw, 38px); line-height: 1.15; letter-spacing: -0.01em; color: var(--navy); }
+  .specimen-body { font-family: 'Source Serif 4', serif; font-size: 16px; line-height: 1.7; color: var(--navy); opacity: 0.85; max-width: 68ch; }
+  .specimen-weights { display: flex; flex-wrap: wrap; gap: var(--space-3); padding-top: var(--space-2); border-top: 1px solid var(--navy); }
+  .weight-sample { display: flex; flex-direction: column; gap: 4px; }
+  .weight-sample-label { font-size: 11px; font-weight: 500; color: var(--navy); opacity: 0.6; }
+  .weight-sample-text { font-size: 20px; color: var(--navy); }
+
+  /* --- behind-scroll demo: an element visually tucks behind an opaque panel
+     as you scroll, via z-index + sticky, not a text reveal --- */
+  .demo-shell {
+    background: var(--white);
+    border: 1px solid var(--navy);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .demo-caption {
+    padding: var(--space-2) var(--space-4);
+    font-size: 13px;
+    color: var(--navy);
+    opacity: 0.7;
+    border-top: 1px solid var(--navy);
+  }
+  .behind-demo {
+    height: 420px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    position: relative;
+  }
+  .behind-track { height: 840px; position: relative; }
+
+  .behind-object-layer {
+    position: sticky;
+    top: 0;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    z-index: 1;
+  }
+  .behind-object {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.4;
+    padding: var(--space-2);
+  }
+
+  .behind-panel-layer {
+    position: relative;
+    height: 420px;
+    margin-top: -420px;
+    z-index: 2;
+    background: var(--navy);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-4);
+  }
+  .behind-panel-inner { max-width: 30ch; }
+  .behind-panel-inner .panel-kicker {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: var(--space-1);
+  }
+  .behind-panel-inner .panel-title {
+    font-family: 'PT Serif', serif;
+    font-weight: 700;
+    font-size: clamp(18px, 2.6vw, 24px);
+    margin: 0;
+  }
+  .behind-scroll-hint {
+    position: sticky;
+    top: var(--space-2);
+    float: right;
+    margin: var(--space-2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: rgba(255,255,255,0.9);
+    padding: 4px 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--navy);
+    z-index: 3;
+  }
+
+  footer.page-foot {
+    border-top: 1px solid var(--navy);
+    padding: var(--space-4) 0 var(--space-6);
+    font-size: 13px;
+    color: var(--navy);
+    opacity: 0.7;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 767px) {
+    header.page-head { padding: var(--space-5) 0 var(--space-4); }
+    section.doc-section { padding: var(--space-4) 0; }
+    .specimen { padding: var(--space-3); }
+    .specimen-head { flex-direction: column; align-items: flex-start; }
+    .specimen-meta { text-align: left; }
+    .specimen-weights { flex-direction: column; gap: var(--space-2); }
+    .toc-links { gap: var(--space-2); }
+    .behind-demo { height: 340px; }
+    .behind-track { height: 680px; }
+    .behind-object-layer, .behind-panel-layer { height: 340px; }
+    .behind-panel-layer { margin-top: -340px; }
+  }
+</style>
+</head>
+<body>
+
+  <nav class="toc" aria-label="İçindekiler">
+    <div class="toc-inner">
+      <span class="toc-title">Tasarım Sistemi</span>
+      <div class="toc-links">
+        <a href="#tokens">Tokenlar</a>
+        <a href="#typography">Tipografi</a>
+        <a href="#motion">Hareket</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <header class="page-head">
+      <span class="eyebrow">Kilitlenmiş Referans</span>
+      <h1 class="page-title">Tasarım Sistemi Referansı</h1>
+      <p class="page-desc">Başlıklar PT Serif 700, gövde metni Source Serif 4, renkler sadece #112A40 ve beyaz. Bu üçü kilitli — yeni font/renk eklenmesi kullanıcı onayı gerektirir.</p>
+    </header>
+
+    <section class="doc-section" id="tokens">
+      <div class="section-head">
+        <span class="section-kicker">01</span>
+        <h2 class="section-title">Renk Tokenları</h2>
+        <p class="section-desc">Sistemde sadece bu iki renk var. Başka renk eklenmesi ayrı onay gerektirir (bkz. docs/design-system.md).</p>
+      </div>
+      <div class="token-grid">
+        <div class="token-swatch">
+          <div class="token-color" style="background:var(--navy);"></div>
+          <div class="token-meta"><span class="token-name">Navy</span><span class="token-value">#112A40</span></div>
+        </div>
+        <div class="token-swatch">
+          <div class="token-color" style="background:var(--white); border-bottom:1px solid var(--navy);"></div>
+          <div class="token-meta"><span class="token-name">White</span><span class="token-value">#FFFFFF</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="typography">
+      <div class="section-head">
+        <span class="section-kicker">02</span>
+        <h2 class="section-title">Tipografi</h2>
+        <p class="section-desc">Başlıklar için PT Serif 700, gövde metni için Source Serif 4. Kilitlendi — yeni font eklenmesi ayrı onay gerektirir.</p>
+      </div>
+
+      <div class="specimen-stack">
+
+        <div class="specimen">
+          <div class="specimen-head">
+            <div class="specimen-name-group">
+              <span class="specimen-index">BAŞLIK</span>
+              <span class="specimen-name">PT Serif · 700</span>
+            </div>
+            <div class="specimen-meta">
+              <span class="specimen-meta-label">Kullanım</span>
+              <span class="specimen-meta-value">h1 / h2 / sayfa başlıkları</span>
+            </div>
+          </div>
+          <div class="specimen-display">Derinlik ve Otorite Taşıyan Başlık</div>
+          <div class="specimen-weights">
+            <div class="weight-sample"><span class="weight-sample-label">Bold 700</span><span class="weight-sample-text" style="font-family:'PT Serif', serif; font-weight:700;">Aa Bb Cc Dd Ee</span></div>
+          </div>
+        </div>
+
+        <div class="specimen">
+          <div class="specimen-head">
+            <div class="specimen-name-group">
+              <span class="specimen-index">GÖVDE</span>
+              <span class="specimen-name">Source Serif 4</span>
+            </div>
+            <div class="specimen-meta">
+              <span class="specimen-meta-label">Kullanım</span>
+              <span class="specimen-meta-value">paragraf / açıklama / uzun metin</span>
+            </div>
+          </div>
+          <p class="specimen-body">Source Serif, dengeli oranları ve net gövde çizgileriyle uzun okuma seanslarında göz yorgunluğunu azaltır; başlıktaki PT Serif 700 ile net bir kontrast kuruyor.</p>
+          <div class="specimen-weights">
+            <div class="weight-sample"><span class="weight-sample-label">Regular 400</span><span class="weight-sample-text" style="font-family:'Source Serif 4', serif; font-weight:400;">Aa Bb Cc Dd Ee</span></div>
+            <div class="weight-sample"><span class="weight-sample-label">Semibold 600</span><span class="weight-sample-text" style="font-family:'Source Serif 4', serif; font-weight:600;">Aa Bb Cc Dd Ee</span></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="doc-section" id="motion">
+      <div class="section-head">
+        <span class="section-kicker">03</span>
+        <h2 class="section-title">Scroll ile Arkaya Düşme Efekti</h2>
+        <p class="section-desc">Velar referansındaki gerçek efekt: bir obje scroll ilerledikçe, üstüne binen opak bir panelin arkasına "düşüyor" — sticky + negatif margin + z-index kombinasyonu ile. Metin reveal değil, gerçekten cisimlerin birbirinin arkasına geçmesi.</p>
+      </div>
+
+      <div class="demo-shell">
+        <div class="behind-demo" id="behind-scroll">
+          <span class="behind-scroll-hint">↓ İçeride kaydır</span>
+          <div class="behind-track">
+            <div class="behind-object-layer">
+              <div class="behind-object">Obje<br>(sticky)</div>
+            </div>
+            <div class="behind-panel-layer">
+              <div class="behind-panel-inner">
+                <span class="panel-kicker">Opak Panel</span>
+                <p class="panel-title">Bu panel yukarı kayarken, sticky obje görsel olarak arkasında kalır — Velar'daki ev görselinin koyu bölüme geçişiyle aynı mekanik.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="demo-caption">Mekanik: obje katmanı <code>position: sticky; top:0; z-index:1</code>; panel katmanı normal akışta, <code>margin-top: -[konteyner yüksekliği]</code> ve <code>z-index:2</code> ile üstüne kayıp objeyi görsel olarak örtüyor. Önceki sürümdeki hata <code>vh</code> birimlerinin konteyner yüksekliğiyle eşleşmemesiydi — artık sabit piksel yüksekliklerle hizalı.</p>
+      </div>
+    </section>
+
+    <footer class="page-foot">
+      Font ve renk sistemi kilitlendi: PT Serif 700 (başlık) + Source Serif 4 (gövde) + #112A40/#FFFFFF. Yeni font veya renk eklenmesi kullanıcı onayı gerektirir. Kutu/kart şablonları (büyük, yapısal içerik blokları anlamında) sonraki bir aşamada ayrı ele alınacak.
+    </footer>
+  </div>
+
+</body>
+</html>
